@@ -15,7 +15,7 @@ var (
 
 func ListRoute(route *gin.Engine)  {
 	route.GET("/lists", listHandler.GetAllListsHandler)
-	route.POST("/lists/add")
+	route.POST("/lists/add", listHandler.CreateNewList)
 	route.GET("/lists/:list_id", listHandler.GetListByIDHandler)
 	route.PUT("/lists/edit/:list_id")
 	route.DELETE("/lists/delete/:list_id")

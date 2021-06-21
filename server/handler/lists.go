@@ -36,3 +36,21 @@ func (h *listHandler) GetListByIDHandler(c *gin.Context) {
 
 	c.JSON(200, lists)
 }
+
+func (h *listHandler) CreateNewList(c *gin.Context) {
+	var listInput lists.UserCreateList
+
+	if err := c.ShouldBindJSON(&listInput); err != nil {
+		c.JSON(400, gin.H{"errors": err.Error()})
+		return
+	}
+
+	lists, err := h.listService.MakeNewUserService(listInput)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(201, lists)
+}

@@ -1,7 +1,7 @@
 package users
 
 type UserRegisterInput struct {
-	FullName string `json:"full_name" binding:"required"`
+	FullName string `json:"fullname" binding:"required"`
 	Address string `json:"address" binding:"required"`
 	Email string `json:"email" binding:"required, email"`
 	Password string `json:"password" binding:"required"`

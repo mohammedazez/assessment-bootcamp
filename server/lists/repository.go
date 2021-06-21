@@ -8,6 +8,7 @@ import (
 type Repository interface {
 	GetAllLists() ([]entity.List, error)
 	GetListssByID(ID string)([]entity.List, error)
+	MakeNewList(newList entity.List) (entity.List, error)
 }
 
 type repository struct {
@@ -41,4 +42,12 @@ func (r *repository) GetListssByID(ID string)([]entity.List, error){
 	}
 
 	return lists, nil
+}
+
+func (r *repository) MakeNewList(newList entity.List) (entity.List, error) {
+	if err := r.db.Create(&newList).Error; err != nil {
+		return newList, err
+	}
+
+	return newList, nil
 }

@@ -36,3 +36,39 @@ func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
 
 	c.JSON(200, users)
 }
+
+func (h *userHandler) UserRegisterHandler(c *gin.Context) {
+	var userInput users.UserRegisterInput
+
+	if err := c.ShouldBindJSON(&userInput); err != nil {
+		c.JSON(400, gin.H{"errors": err.Error()})
+		return
+	}
+
+	users, err := h.userService.MakeNewUserService(userInput)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(201, users)
+}
+
+func (h *userHandler) UserLoginHandler(c *gin.Context) {
+	var userInput users.UserLoginInput
+
+	if err := c.ShouldBindJSON(&userInput); err != nil {
+		c.JSON(400, gin.H{"errors": err.Error()})
+		return
+	}
+
+	users, err := h.userService.UserLoginService(userInput)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, users)
+}

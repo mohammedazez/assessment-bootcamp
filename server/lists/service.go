@@ -5,6 +5,7 @@ import "server/entity"
 type Service interface {
 	GetAllLists() ([]entity.List, error)
 	GetListByIDService (listID string) ([]entity.List, error)
+	MakeNewUserService(listInput UserCreateList)(entity.List, error)
 }
 
 type service struct {
@@ -35,4 +36,18 @@ func (s *service) GetListByIDService (listID string) ([]entity.List, error) {
 	return lists, nil
 }
 
+func (s *service) MakeNewUserService(listInput UserCreateList)(entity.List, error)  {
+	var NewList = entity.List{
+		Website: listInput.Website,
+		Password: listInput.Password,
+	}
+
+	lists, err := s.repository.MakeNewList(NewList)
+
+	if err != nil {
+		return entity.List{}, err
+	}
+
+	return lists, nil
+}
 
