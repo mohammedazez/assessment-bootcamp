@@ -1,21 +1,40 @@
 const initialState = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
+  user: null,
+  isLoading: false,
+  error: null,
 };
 
 const userRegisterReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "USER_REGISTER_FORM":
-      return {
-        ...initialState,
-      };
-    case "USER_REGISTER_SET_FIRSTNAME":
+    case "USER_LOADING":
       return {
         ...state,
-        firstName: action.payload.firstName,
+        isLoading: true,
       };
+    case "USER_REGISTER":
+      return {
+        ...state,
+        user: action.payload,
+        isLoading: false,
+      };
+    case "USER_LOGIN":
+      return {
+        ...state,
+        user: action.payload,
+        isLoading: false,
+      };
+    case "USER_LOGOUT":
+      return {
+        ...state,
+        user: null,
+      };
+    case "USER_ERROR":
+      return {
+        ...state,
+        error: action.payload,
+        isLoading: false,
+      };
+
     default:
       return state;
   }
