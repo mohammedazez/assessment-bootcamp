@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 
 import userRegisterReducer from "../redux/user/register/userRegisterReducer";
-import listReducers from "../redux/lists/listsReducers";
+// import listReducers from "../redux/lists/listsReducers";
 
 const rootReducer = combineReducers({
   userRegister: userRegisterReducer,
-  listReducer: listsReducers,
+  // listReducer: listReducers,
 });
 
 export default rootReducer;

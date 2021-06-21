@@ -1,23 +1,26 @@
 package users
 
 import (
-	"fmt"
+	"errors"
+	"golang.org/x/crypto/bcrypt"
+	"server/auth"
 	"server/entity"
 )
 
 type Service interface {
 	GetAllUser() ([]UserFormatter, error)
-	GetUserByIDService (userID string) (UserFormatter, error)
-	MakeNewUserService(userInput UserRegisterInput)(UserFormatter, error)
+	GetUserByIDService(userID string) (UserFormatter, error)
+	MakeNewUserService(userInput UserRegisterInput) (UserFormatter, error)
 	UserLoginService(userInput UserLoginInput) (UserLoginFormatter, error)
 }
 
 type service struct {
-	repository Repository
+	repository  Repository
+	authService auth.Service
 }
 
-func NewService(repository Repository) *service {
-	return &service{repository}
+func NewService(repository Repository, authService auth.Service) *service {
+	return &service{repository, authService}
 }
 
 func (s *service) GetAllUser() ([]UserFormatter, error) {
@@ -32,7 +35,7 @@ func (s *service) GetAllUser() ([]UserFormatter, error) {
 	return formatters, nil
 }
 
-func (s *service) GetUserByIDService (userID string) (UserFormatter, error) {
+func (s *service) GetUserByIDService(userID string) (UserFormatter, error) {
 	users, err := s.repository.GetUsersByID(userID)
 
 	if err != nil {
@@ -44,11 +47,11 @@ func (s *service) GetUserByIDService (userID string) (UserFormatter, error) {
 	return formatter, nil
 }
 
-func (s *service) MakeNewUserService(userInput UserRegisterInput)(UserFormatter, error)  {
+func (s *service) MakeNewUserService(userInput UserRegisterInput) (UserFormatter, error) {
 	var NewUser = entity.User{
 		Fullname: userInput.FullName,
-		Address: userInput.Address,
-		Email: userInput.Email,
+		Address:  userInput.Address,
+		Email:    userInput.Email,
 		Password: userInput.Password,
 	}
 
@@ -62,14 +65,27 @@ func (s *service) MakeNewUserService(userInput UserRegisterInput)(UserFormatter,
 	return formatter, nil
 }
 
-func (s *service) UserLoginService(input UserLoginInput) (UserLoginFormatter, error) {
-	checkUser, err := s.repository.UserWantToLogin(input.Email)
+func (s *service) UserLoginService(userInput UserLoginInput) (UserLoginFormatter, error) {
 
-	fmt.Println(checkUser)
+	checkUser, err := s.repository.UserWantToLogin(userInput.Email)
 
 	if err != nil {
 		return UserLoginFormatter{}, err
 	}
 
-	return UserLoginFormatter{}, err
+	if checkUser.ID == 0 || len(checkUser.Fullname) <= 1 {
+		return UserLoginFormatter{}, errors.New("user email or password invalid")
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(checkUser.Password), []byte(userInput.Password))
+
+	if err != nil {
+		return UserLoginFormatter{}, errors.New("user email or password invalid")
+	}
+
+	token, _ := s.authService.GenerateToken(checkUser.ID)
+
+	formatter := UserLoginFormat(checkUser, token)
+
+	return formatter, nil
 }
