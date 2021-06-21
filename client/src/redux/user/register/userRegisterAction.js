@@ -1,4 +1,4 @@
-import bookListApi from "../../../APIs/bookListApi";
+import webListApi from "../../../APIs/webListApi";
 
 export const registerUser = (payload) => {
   return async (dispatch) => {
@@ -7,7 +7,7 @@ export const registerUser = (payload) => {
         type: "USER_LOADING",
       });
 
-      const response = await bookListApi({
+      const response = await webListApi({
         method: "POST",
         url: "/users/register",
         data: payload,
@@ -32,7 +32,7 @@ export const loginUser = (payload) => {
         type: "USER_LOADING",
       });
 
-      const response = await bookListApi({
+      const response = await webListApi({
         method: "POST",
         url: "/users/login",
         data: payload,
