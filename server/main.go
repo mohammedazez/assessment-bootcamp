@@ -10,7 +10,7 @@ func main(){
 
 	r := gin.Default()
 	routes.UserRoute(r)
-
+	routes.ListRoute(r)
 
 	r.Run()
 }

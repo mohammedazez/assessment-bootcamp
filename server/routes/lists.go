@@ -2,7 +2,7 @@ package routes
 
 import "github.com/gin-gonic/gin"
 
-func UserRoute(route *gin.Engine)  {
+func ListRoute(route *gin.Engine)  {
 	route.GET("/lists")
 	route.POST("/lists/add")
 	route.GET("/lists/:list_id")
