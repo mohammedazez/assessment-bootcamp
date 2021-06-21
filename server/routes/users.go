@@ -17,9 +17,9 @@ var (
 
 func UserRoute(route *gin.Engine)  {
 	route.GET("/users", userHandler.GetAllUsersHandler)
-	route.POST("/users/register", userHandler.GetUserByIDHandler)
+	route.POST("/users/register")
 	route.POST("/users/login")
-	route.GET("/users/:user_id")
+	route.GET("/users/:user_id", userHandler.GetUserByIDHandler)
 	route.PUT("/users/edit/:user_id")
 	route.DELETE("/users/delete/:user_id")
 }

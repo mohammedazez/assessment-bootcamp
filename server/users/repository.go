@@ -8,6 +8,8 @@ import (
 type Repository interface {
 	GetAllUsers() ([]entity.User, error)
 	GetUsersByID(ID string)([]entity.User, error)
+	MakeNewUser()
+
 }
 
 type repository struct {

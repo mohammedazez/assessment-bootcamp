@@ -25,3 +25,14 @@ func (s *service) GetAllLists() ([]entity.List, error) {
 	return lists, nil
 }
 
+func (s *service) GetListByIDService (listID string) ([]entity.List, error) {
+	lists, err := s.repository.GetListssByID(listID)
+
+	if err != nil {
+		return lists, nil
+	}
+
+	return lists, nil
+}
+
+

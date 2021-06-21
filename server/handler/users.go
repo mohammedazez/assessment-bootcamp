@@ -2,7 +2,6 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
 	"server/users"
 )
 
@@ -18,11 +17,11 @@ func (h *userHandler) GetAllUsersHandler(c *gin.Context) {
 	users, err := h.userService.GetAllUser()
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, users)
+	c.JSON(200, users)
 }
 
 func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
