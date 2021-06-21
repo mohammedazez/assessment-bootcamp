@@ -11,31 +11,30 @@ type UserLoginFormatter struct {
 }
 
 type UserFormatter struct {
-	ID            int    `json:"id"`
-	Fullname      string `json:"fullname"`
-	Address       string `json:"address"`
-	Email         string `json:"email"`
+	ID       int    `json:"id"`
+	Fullname string `json:"fullname"`
+	Address  string `json:"address"`
+	Email    string `json:"email"`
 }
 
 func UserFormat(user entity.User) UserFormatter {
 	return UserFormatter{
-		ID:        user.ID,
+		ID:       user.ID,
 		Fullname: user.Fullname,
-		Email:     user.Email,
-		Address:   user.Address,
+		Email:    user.Email,
+		Address:  user.Address,
 	}
 }
 
 func UserLoginFormat(user entity.User, token string) UserLoginFormatter {
 	return UserLoginFormatter{
 		ID:            user.ID,
-		Fullname:          user.Fullname,
+		Fullname:      user.Fullname,
 		Email:         user.Email,
 		Address:       user.Address,
 		Authorization: token,
 	}
 }
-
 
 func UserFormats(users []entity.User) []UserFormatter {
 	var userFormats []UserFormatter

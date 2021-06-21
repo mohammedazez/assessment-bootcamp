@@ -73,7 +73,7 @@ func (s *service) UserLoginService(userInput UserLoginInput) (UserLoginFormatter
 		return UserLoginFormatter{}, err
 	}
 
-	if checkUser.ID == 0 || len(checkUser.Fullname) <= 1 {
+	if checkUser.ID == 0 || len(checkUser.Email) <= 1 {
 		return UserLoginFormatter{}, errors.New("user email or password invalid")
 	}
 
