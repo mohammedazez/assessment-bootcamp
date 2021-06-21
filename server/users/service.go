@@ -1,6 +1,9 @@
 package users
 
-import "server/entity"
+import (
+	"fmt"
+	"server/entity"
+)
 
 type Service interface {
 	GetAllUser() ([]UserFormatter, error)
@@ -62,7 +65,11 @@ func (s *service) MakeNewUserService(userInput UserRegisterInput)(UserFormatter,
 func (s *service) UserLoginService(input UserLoginInput) (UserLoginFormatter, error) {
 	checkUser, err := s.repository.UserWantToLogin(input.Email)
 
+	fmt.Println(checkUser)
+
 	if err != nil {
-		return UserLoginFormat(), nil
+		return UserLoginFormatter{}, err
 	}
+
+	return UserLoginFormatter{}, err
 }
